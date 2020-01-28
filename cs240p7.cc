@@ -105,10 +105,23 @@ const Team& TeamPQ::findMinLosses() const{
 }
 
 void TeamPQ::removeMaxWins(){
+
+    if (lossHeap.size() == 1){
+        lossHeap.clear();
+        winHeap.clear();
+        return;
+    }
+    
     int minIndex = winHeap.at(0).getMinIndex();
     swap(minIndex, lossHeap.size() - 1, false);
-    lossHeap.pop_back();
-    while ((minIndex * 2 + 1 < lossHeap.size() - 1) || (minIndex * 2 + 2 < lossHeap.size() - 1)){
+    
+    if (lossHeap.size() == 1){
+        lossHeap.clear();
+    }else{
+        lossHeap.pop_back();
+    }
+    int losssize = lossHeap.size();
+    while (((minIndex * 2 + 1) < losssize - 1) || ((minIndex * 2 + 2) < losssize - 1)){
         int tempj = minIndex * 2 + 1;
         if (tempj < lossHeap.size() - 1 && lossHeap[tempj + 1].getLosses() < lossHeap[tempj].getLosses()){
             tempj = tempj + 1;
@@ -120,9 +133,14 @@ void TeamPQ::removeMaxWins(){
         minIndex = tempj;
     }
     
+    
     int maxIndex = 0;
     swap(maxIndex, winHeap.size() - 1, true);
-    winHeap.pop_back();
+    if (winHeap.size() == 1){
+        winHeap.clear();
+    }else{
+        winHeap.pop_back();
+    }
     while ((maxIndex * 2 + 1 < winHeap.size() - 1) || (maxIndex * 2 + 2 < winHeap.size() - 1)){
         int tempj = maxIndex * 2 + 1;
         if (tempj < winHeap.size() - 1 && winHeap[tempj + 1].getWins() > winHeap[tempj].getWins()){
@@ -138,9 +156,18 @@ void TeamPQ::removeMaxWins(){
 }
 
 void TeamPQ::removeMinLosses(){
+    if (lossHeap.size() == 1){
+        lossHeap.clear();
+        winHeap.clear();
+        return;
+    }
     int maxIndex = lossHeap.at(0).getMaxIndex();
     swap(maxIndex, winHeap.size() - 1, true);
-    winHeap.pop_back();
+    if (winHeap.size() == 1){
+        winHeap.clear();
+    }else{
+        winHeap.pop_back();
+    }
     while ((maxIndex * 2 + 1 < winHeap.size() - 1) || (maxIndex * 2 + 2 < winHeap.size() - 1)){
         int tempj = maxIndex * 2 + 1;
         if (tempj < winHeap.size() - 1 && winHeap[tempj + 1].getWins() > winHeap[tempj].getWins()){
@@ -155,7 +182,11 @@ void TeamPQ::removeMinLosses(){
     
     int minIndex = 0;
     swap(minIndex, lossHeap.size() - 1, false);
-    lossHeap.pop_back();
+    if (lossHeap.size() == 1){
+        lossHeap.clear();
+    }else{
+        lossHeap.pop_back();
+    }
     while ((minIndex * 2 + 1 < lossHeap.size() - 1) || (minIndex * 2 + 2 < lossHeap.size() - 1)){
         int tempj = minIndex * 2 + 1;
         if (tempj < lossHeap.size() - 1 && lossHeap[tempj + 1].getLosses() < lossHeap[tempj].getLosses()){
